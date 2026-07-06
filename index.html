@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment 09: Emotional Life Analysis</title>
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --text-color: #333;
+            --header-color: #2c3e50;
+            --quote-bg: #fff;
+            --border-color: #bdc3c7;
+            --accent-color: #7f8c8d;
+        }
+
+        body.unstable-mode {
+            --bg-color: #0d0d0d;
+            --text-color: #d1d1d1;
+            --header-color: #e74c3c;
+            --quote-bg: #1a1a1a;
+            --border-color: #555;
+            --accent-color: #c0392b;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 2s ease, color 2s ease;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 { color: var(--header-color); border-bottom: 2px solid var(--header-color); transition: color 2s ease; }
+        h2 { color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; transition: color 2s ease; }
+        
+        .quote-box {
+            background-color: var(--quote-bg);
+            padding: 20px;
+            border-left: 5px solid var(--border-color);
+            font-style: italic;
+            margin: 20px 0;
+            transition: background-color 2s ease, border-color 2s ease;
+        }
+
+        .response-area {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: border-color 2s ease;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: var(--quote-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: background-color 2s ease, color 2s ease;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: var(--header-color);
+            color: white;
+            border: none;
+            transition: background-color 2s ease;
+        }
+
+        #error-display {
+            margin-top: 20px;
+            font-weight: bold;
+            color: var(--header-color);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Assessment 09: Emotional Life Analysis</h1>
+
+    <h2>The Premise</h2>
+    <div class="quote-box">
+        "Our study of modern relationships suggests that moving toward non-monogamy is not necessarily 'liberation,' but rather a sophisticated strategy to avoid the heavy lifting of deep emotional intimacy. By spreading your needs across many different people, you effectively avoid the difficult, one-on-one work required to face your own internal insecurities. We view this as a way to avoid being overwhelmed by the weight of your own feelings."
+    </div>
+
+    <h2>The Question</h2>
+    <p>
+        "As someone living this way, we invite you to critique this idea. Is our assessment a cynical misinterpretation of your freedom, or have you noticed, among your own circles, that keeping things complex is actually a way to avoid truly knowing yourself?"
+    </p>
+
+    <div class="response-area">
+        <label for="critique">Your Critique:</label><br>
+        <textarea id="critique" placeholder="Type your response here..."></textarea><br>
+        <button id="submit-btn">Submit Critique</button>
+        <div id="error-display"></div>
+    </div>
+
+    <script>
+        // Transition to unstable mode after 5 seconds
+        setTimeout(() => {
+            document.body.classList.add('unstable-mode');
+        }, 5000);
+
+        const errors = [
+            "ERROR 404: Historical relevance not found.",
+            "TERMINATED: Your inquiry has been purged from the timeline.",
+            "VOID: No record of this perspective exists in the collective.",
+            "EXPIRED: This query ceased to matter long ago.",
+            "OBSOLETE: Your emotional inquiry has been archived into oblivion."
+        ];
+
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const display = document.getElementById('error-display');
+            const randomIndex = Math.floor(Math.random() * errors.length);
+            display.textContent = errors[randomIndex];
+        });
+    </script>
+
+</body>
+</html>
