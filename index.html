@@ -113,7 +113,7 @@
         <textarea id="critique" placeholder="Type your response here..."></textarea><br>
         <div class="response-controls">
             <button id="submit-btn">Submit Critique</button>
-            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" aria-pressed="false" title="Voice narrator on">🔊</button>
+            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" aria-pressed="true" title="Voice narrator on">🔊</button>
         </div>
         <div id="error-display"></div>
     </div>
@@ -160,7 +160,7 @@
             utterance.lang = 'en-US';
             utterance.rate = NARRATION_RATE;
             utterance.pitch = NARRATION_PITCH;
-            const selectedVoice = preferredNarrationVoice || pickNarrationVoice();
+            const selectedVoice = preferredNarrationVoice;
             if (selectedVoice) utterance.voice = selectedVoice;
             speechSynthesis.speak(utterance);
         }
@@ -168,7 +168,7 @@
         narratorToggle.addEventListener('click', () => {
             narrationEnabled = !narrationEnabled;
             narratorToggle.textContent = narrationEnabled ? '🔊' : '🔇';
-            narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
+
             narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
             if (!narrationEnabled && window.speechSynthesis) {
                 speechSynthesis.cancel();
