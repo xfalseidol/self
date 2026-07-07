@@ -143,10 +143,9 @@
             if (!window.speechSynthesis) return null;
             const voices = speechSynthesis.getVoices();
             if (!voices.length) return null;
-            return voices.find((voice) =>
-                /microsoft/i.test(voice.name) &&
-                MICROSOFT_VOICE_NAME_PATTERN.test(voice.name)
-            ) || voices.find((voice) => /en-us/i.test(voice.lang)) || voices[0];
+            return voices.find((voice) => MICROSOFT_VOICE_NAME_PATTERN.test(voice.name))
+                || voices.find((voice) => /en-us/i.test(voice.lang))
+                || voices[0];
         }
 
         function speakResponse(text) {
@@ -172,7 +171,7 @@
         });
 
         if (window.speechSynthesis) {
-            speechSynthesis.onvoiceschanged = pickNarrationVoice;
+            speechSynthesis.getVoices();
         } else {
             narrationEnabled = false;
             narratorToggle.textContent = '🔇';
