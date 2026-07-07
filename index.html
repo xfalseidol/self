@@ -113,7 +113,7 @@
         <textarea id="critique" placeholder="Type your response here..."></textarea><br>
         <div class="response-controls">
             <button id="submit-btn">Submit Critique</button>
-            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" aria-pressed="true" title="Voice narrator on">🔊</button>
+            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" aria-pressed="false" title="Voice narrator on">🔊</button>
         </div>
         <div id="error-display"></div>
     </div>
@@ -134,8 +134,8 @@
 
         const narratorToggle = document.getElementById('narrator-toggle');
         // Values chosen for a clear, measured assistive narration pace and a lower synthesized tone.
-        const NARRATION_RATE = 0.82; // Valid browser range is roughly 0.1-10.
-        const NARRATION_PITCH = 0.7; // Valid browser range is roughly 0-2.
+        const NARRATION_RATE = 0.82; // Valid browser range: 0.1-10.
+        const NARRATION_PITCH = 0.7; // Valid browser range: 0-2.
         const MICROSOFT_VOICE_NAME_PATTERN = /(david|zira|mark|hazel|aria|guy|jenny)/i;
         let narrationEnabled = true;
         let preferredNarrationVoice = null;
@@ -168,6 +168,7 @@
         narratorToggle.addEventListener('click', () => {
             narrationEnabled = !narrationEnabled;
             narratorToggle.textContent = narrationEnabled ? '🔊' : '🔇';
+            narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
 
             narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
             if (!narrationEnabled && window.speechSynthesis) {
