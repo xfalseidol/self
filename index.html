@@ -133,9 +133,10 @@
         ];
 
         const narratorToggle = document.getElementById('narrator-toggle');
-        // Slightly slower/lower than default to approximate a synthesized assistive narrator tone.
+        // Values chosen for a clear, measured assistive narration pace and a lower synthesized tone.
         const NARRATION_RATE = 0.82;
         const NARRATION_PITCH = 0.7;
+        const MICROSOFT_VOICE_NAME_PATTERN = /(david|zira|mark|hazel|aria|guy|jenny)/i;
         let narrationEnabled = true;
 
         function pickNarrationVoice() {
@@ -144,7 +145,7 @@
             if (!voices.length) return null;
             return voices.find((voice) =>
                 /microsoft/i.test(voice.name) &&
-                /(david|zira|mark|hazel|aria|guy|jenny)/i.test(voice.name)
+                MICROSOFT_VOICE_NAME_PATTERN.test(voice.name)
             ) || voices.find((voice) => /en-us/i.test(voice.lang)) || voices[0];
         }
 
