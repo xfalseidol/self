@@ -113,7 +113,7 @@
         <textarea id="critique" placeholder="Type your response here..."></textarea><br>
         <div class="response-controls">
             <button id="submit-btn">Submit Critique</button>
-            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Disable voice narrator" aria-pressed="true" title="Voice narrator on">🔊</button>
+            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Disable voice narrator" title="Voice narrator on">🔊</button>
         </div>
         <div id="error-display"></div>
     </div>
@@ -136,6 +136,7 @@
         // Values chosen for a clear, measured assistive narration pace and a lower synthesized tone.
         const NARRATION_RATE = 0.82; // Valid browser range: 0.1-10.
         const NARRATION_PITCH = 0.7; // Valid browser range: 0-2.
+        // Prefer common Microsoft English voice names when present.
         const MICROSOFT_VOICE_NAME_PATTERN = /(david|zira|mark|hazel|aria|guy|jenny)/i;
         let narrationEnabled = true;
         let preferredNarrationVoice = null;
