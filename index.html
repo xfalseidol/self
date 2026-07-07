@@ -74,6 +74,19 @@
             transition: background-color 2s ease;
         }
 
+        .response-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .speaker-btn {
+            width: 42px;
+            padding: 10px;
+            font-size: 18px;
+            line-height: 1;
+        }
+
         #error-display {
             margin-top: 20px;
             font-weight: bold;
@@ -98,7 +111,10 @@
     <div class="response-area">
         <label for="critique">Your Critique:</label><br>
         <textarea id="critique" placeholder="Type your response here..."></textarea><br>
-        <button id="submit-btn">Submit Critique</button>
+        <div class="response-controls">
+            <button id="submit-btn">Submit Critique</button>
+            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" aria-pressed="true" title="Voice narrator on">🔊</button>
+        </div>
         <div id="error-display"></div>
     </div>
 
@@ -116,10 +132,48 @@
             "OBSOLETE: Your emotional inquiry has been archived into oblivion."
         ];
 
+        const narratorToggle = document.getElementById('narrator-toggle');
+        let narrationEnabled = true;
+
+        function pickNarrationVoice() {
+            const voices = speechSynthesis.getVoices();
+            return voices.find((voice) =>
+                /microsoft/i.test(voice.name) &&
+                /(david|zira|mark|hazel|aria|guy|jenny)/i.test(voice.name)
+            ) || voices.find((voice) => /en-us/i.test(voice.lang)) || voices[0];
+        }
+
+        function speakResponse(text) {
+            if (!narrationEnabled || !window.speechSynthesis || !text) return;
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.82;
+            utterance.pitch = 0.7;
+            const selectedVoice = pickNarrationVoice();
+            if (selectedVoice) utterance.voice = selectedVoice;
+            speechSynthesis.speak(utterance);
+        }
+
+        narratorToggle.addEventListener('click', () => {
+            narrationEnabled = !narrationEnabled;
+            narratorToggle.textContent = narrationEnabled ? '🔊' : '🔇';
+            narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
+            narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
+            if (!narrationEnabled && window.speechSynthesis) {
+                speechSynthesis.cancel();
+            }
+        });
+
+        if (window.speechSynthesis) {
+            speechSynthesis.onvoiceschanged = pickNarrationVoice;
+        }
+
         document.getElementById('submit-btn').addEventListener('click', () => {
             const display = document.getElementById('error-display');
             const randomIndex = Math.floor(Math.random() * errors.length);
             display.textContent = errors[randomIndex];
+            speakResponse(display.textContent);
         });
     </script>
 
