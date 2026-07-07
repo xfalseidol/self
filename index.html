@@ -74,6 +74,19 @@
             transition: background-color 2s ease;
         }
 
+        .response-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .speaker-btn {
+            width: 42px;
+            padding: 10px;
+            font-size: 18px;
+            line-height: 1;
+        }
+
         #error-display {
             margin-top: 20px;
             font-weight: bold;
@@ -98,7 +111,10 @@
     <div class="response-area">
         <label for="critique">Your Critique:</label><br>
         <textarea id="critique" placeholder="Type your response here..."></textarea><br>
-        <button id="submit-btn">Submit Critique</button>
+        <div class="response-controls">
+            <button id="submit-btn">Submit Critique</button>
+            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" title="Voice narrator on">🔊</button>
+        </div>
         <div id="error-display"></div>
     </div>
 
@@ -116,10 +132,68 @@
             "OBSOLETE: Your emotional inquiry has been archived into oblivion."
         ];
 
+        const narratorToggle = document.getElementById('narrator-toggle');
+        // Values chosen for a clear, measured assistive narration pace and a lower synthesized tone.
+        const NARRATION_RATE = 0.82; // Valid browser range: 0.1-10.
+        const NARRATION_PITCH = 0.7; // Valid browser range: 0-2.
+        // Prefer common Microsoft English voice names when present.
+        const MICROSOFT_VOICE_NAME_PATTERN = /(david|zira|mark|hazel|aria|guy|jenny)/i;
+        let narrationEnabled = true;
+        let preferredNarrationVoice = null;
+
+        function pickNarrationVoice() {
+            if (!window.speechSynthesis) return null;
+            const voices = speechSynthesis.getVoices();
+            if (!voices.length) return null;
+            return voices.find((voice) => MICROSOFT_VOICE_NAME_PATTERN.test(voice.name))
+                || voices.find((voice) => /en-us/i.test(voice.lang))
+                || voices[0];
+        }
+
+        function refreshNarrationVoice() {
+            preferredNarrationVoice = pickNarrationVoice();
+        }
+
+        function speakResponse(text) {
+            if (!narrationEnabled || !window.speechSynthesis || !text) return;
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = NARRATION_RATE;
+            utterance.pitch = NARRATION_PITCH;
+            const selectedVoice = preferredNarrationVoice;
+            if (selectedVoice) utterance.voice = selectedVoice;
+            speechSynthesis.speak(utterance);
+        }
+
+        narratorToggle.addEventListener('click', () => {
+            narrationEnabled = !narrationEnabled;
+            narratorToggle.textContent = narrationEnabled ? '🔊' : '🔇';
+            narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
+
+            narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
+            if (!narrationEnabled && window.speechSynthesis) {
+                speechSynthesis.cancel();
+            }
+        });
+
+        if (window.speechSynthesis) {
+            refreshNarrationVoice();
+            speechSynthesis.addEventListener('voiceschanged', refreshNarrationVoice);
+        } else {
+            narrationEnabled = false;
+            narratorToggle.textContent = '🔇';
+            narratorToggle.disabled = true;
+            narratorToggle.title = 'Voice narrator unavailable in this browser';
+        }
+
+        narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
+
         document.getElementById('submit-btn').addEventListener('click', () => {
             const display = document.getElementById('error-display');
             const randomIndex = Math.floor(Math.random() * errors.length);
             display.textContent = errors[randomIndex];
+            speakResponse(display.textContent);
         });
     </script>
 
