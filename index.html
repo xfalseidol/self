@@ -133,6 +133,7 @@
         ];
 
         const narratorToggle = document.getElementById('narrator-toggle');
+        // Slightly slower/lower than default to approximate a synthesized assistive narrator tone.
         const NARRATION_RATE = 0.82;
         const NARRATION_PITCH = 0.7;
         let narrationEnabled = true;
@@ -166,13 +167,6 @@
             narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
             if (!narrationEnabled && window.speechSynthesis) {
                 speechSynthesis.cancel();
-            }
-        });
-
-        narratorToggle.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                narratorToggle.click();
             }
         });
 
