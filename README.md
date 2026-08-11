@@ -15,4 +15,4 @@ The page does **not** use geolocation, camera, microphone, or remote telemetry. 
 
 ## Run locally
 
-Open `/home/runner/work/self/self/index.html` in a browser.
+Open `index.html` in a browser.

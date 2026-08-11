@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unspeakable Today, Un-Happenable Tomorrow</title>
+    <title>Unspeakable today, Un-Happenable Tomorrow</title>
     <style>
         :root {
             --page-bg: #f5f0ea;
@@ -504,6 +504,7 @@
 
         let coverSeed = Math.floor(Math.random() * 1_000_000);
         let batteryManager = null;
+        let resizeTimer = null;
 
         function fmt(value) {
             return value == null || value === '' ? 'n/a' : String(value);
@@ -690,7 +691,12 @@
             toggleVoidsButton.textContent = concealed ? 'Restore 212121 voids' : 'Flatten 212121 voids';
         });
 
-        window.addEventListener('resize', refreshTelemetryAndCover);
+        window.addEventListener('resize', () => {
+            window.clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(() => {
+                refreshTelemetryAndCover();
+            }, 150);
+        });
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) refreshTelemetryAndCover();
         });
