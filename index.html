@@ -3,199 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessment 09: Emotional Life Analysis</title>
+    <title>Unspeakable Today, Un-Happenable Tomorrow</title>
     <style>
         :root {
-            --bg-color: #fdfbf7;
-            --text-color: #333;
-            --header-color: #2c3e50;
-            --quote-bg: #fff;
-            --border-color: #bdc3c7;
-            --accent-color: #7f8c8d;
+            --page-bg: #f5f0ea;
+            --page-ink: #171411;
+            --page-muted: #62584f;
+            --rule: rgba(23, 20, 17, 0.18);
+            --panel: rgba(255, 252, 247, 0.78);
+            --accent: #5f0f16;
+            --accent-soft: rgba(95, 15, 22, 0.14);
+            --cover-a: #1d0507;
+            --cover-b: #5f0f16;
+            --cover-c: #c26b34;
+            --cover-d: #dbd4c7;
+            --shadow: 0 30px 70px rgba(30, 15, 13, 0.18);
+            --body-width: min(1180px, calc(100vw - 2.5rem));
         }
 
-        body.unstable-mode {
-            --bg-color: #0d0d0d;
-            --text-color: #d1d1d1;
-            --header-color: #e74c3c;
-            --quote-bg: #1a1a1a;
-            --border-color: #555;
-            --accent-color: #c0392b;
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 2s ease, color 2s ease;
             margin: 0;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
+            background:
+                radial-gradient(circle at top, rgba(194, 107, 52, 0.08), transparent 36%),
+                linear-gradient(180deg, #f8f4ee 0%, var(--page-bg) 42%, #eee5db 100%);
+            color: var(--page-ink);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.68;
+            min-height: 100vh;
         }
 
-        h1 { color: var(--header-color); border-bottom: 2px solid var(--header-color); transition: color 2s ease; }
-        h2 { color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; transition: color 2s ease; }
-        
-        .quote-box {
-            background-color: var(--quote-bg);
-            padding: 20px;
-            border-left: 5px solid var(--border-color);
-            font-style: italic;
-            margin: 20px 0;
-            transition: background-color 2s ease, border-color 2s ease;
+        .page {
+            width: var(--body-width);
+            margin: 0 auto;
+            padding: 1.25rem 0 4rem;
         }
 
-        .response-area {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            transition: border-color 2s ease;
+        .cover {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.75rem;
+            background: #130d0d;
+            min-height: 28rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+            isolation: isolate;
         }
 
-        textarea {
+        #telemetry-cover {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            height: 100px;
-            background: var(--quote-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            margin-bottom: 10px;
-            transition: background-color 2s ease, color 2s ease;
+            height: 100%;
+            display: block;
+        }
+
+        .cover::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(10, 7, 8, 0.1) 0%, rgba(10, 7, 8, 0.72) 82%),
+                radial-gradient(circle at 20% 18%, rgba(255,255,255,0.12), transparent 18%),
+                radial-gradient(circle at 82% 15%, rgba(219, 212, 199, 0.22), transparent 12%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            min-height: 28rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            color: #f8efe5;
+        }
+
+        .cover-kicker {
+            display: inline-flex;
+            align-self: flex-start;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(248, 239, 229, 0.12);
+            border: 1px solid rgba(248, 239, 229, 0.24);
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .cover-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.95fr);
+            align-items: end;
+            gap: 1.5rem;
+        }
+
+        .cover-title {
+            margin: 0;
+            font-size: clamp(2.2rem, 4.8vw, 4.6rem);
+            line-height: 0.92;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            max-width: 11ch;
+        }
+
+        .cover-subtitle {
+            margin: 1rem 0 0;
+            max-width: 44rem;
+            font-size: 1rem;
+            color: rgba(248, 239, 229, 0.82);
+        }
+
+        .telemetry-panel {
+            background: rgba(17, 9, 9, 0.5);
+            border: 1px solid rgba(248, 239, 229, 0.18);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .telemetry-panel h2,
+        .telemetry-panel p,
+        .telemetry-panel dl {
+            margin: 0;
+        }
+
+        .telemetry-panel h2 {
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 0.7rem;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.35rem 0.8rem;
+            font-size: 0.88rem;
+            color: rgba(248, 239, 229, 0.86);
+        }
+
+        .telemetry-grid dt {
+            color: rgba(248, 239, 229, 0.58);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1rem 0 2rem;
         }
 
         button {
-            padding: 10px 20px;
+            appearance: none;
+            border: 1px solid rgba(23, 20, 17, 0.14);
+            background: rgba(255, 252, 247, 0.82);
+            color: var(--page-ink);
+            padding: 0.72rem 1rem;
+            border-radius: 999px;
+            font: inherit;
             cursor: pointer;
-            background: var(--header-color);
-            color: white;
-            border: none;
-            transition: background-color 2s ease;
+            transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
         }
 
-        .response-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        button:hover,
+        button:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(95, 15, 22, 0.32);
+            background: rgba(255, 252, 247, 0.95);
+            outline: none;
         }
 
-        .speaker-btn {
-            width: 42px;
-            padding: 10px;
-            font-size: 18px;
-            line-height: 1;
+        .shell {
+            background: var(--panel);
+            border: 1px solid var(--rule);
+            border-radius: 1.5rem;
+            box-shadow: 0 16px 40px rgba(40, 21, 18, 0.08);
+            padding: clamp(1.2rem, 2.2vw, 2.3rem);
         }
 
-        #error-display {
-            margin-top: 20px;
-            font-weight: bold;
-            color: var(--header-color);
+        .academic-title {
+            font-family: "Times New Roman", Times, serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+        }
+
+        .masthead {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .masthead .academic-title:first-of-type {
+            font-size: clamp(1.9rem, 3vw, 3rem);
+        }
+
+        .masthead .academic-title:last-of-type {
+            font-size: clamp(1.1rem, 2vw, 1.6rem);
+            color: var(--page-muted);
+            margin-top: 0.3rem;
+        }
+
+        .frontpage-note {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--rule);
+            color: var(--page-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ergodic-layout {
+            column-count: 2;
+            column-gap: 3rem;
+            column-rule: 1px solid var(--rule);
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .encoded-panel {
+            break-inside: avoid;
+            padding: 1rem 1.1rem;
+            background: rgba(23, 20, 17, 0.05);
+            border: 1px solid var(--rule);
+            margin: 0 0 1.5rem;
+        }
+
+        .encoded-panel code,
+        .encoded-panel .mono {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.82rem;
+            overflow-wrap: anywhere;
+        }
+
+        .ergodic-dialogue-container {
+            column-span: all;
+            border-top: 1px solid var(--rule);
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dialogue-intro {
+            margin-bottom: 1rem;
+            color: var(--page-muted);
+        }
+
+        .dialogue-block {
+            position: relative;
+            margin-bottom: 1.8rem;
+            text-align: justify;
+            text-align-last: left;
+            line-height: 1.5;
+        }
+
+        .speaker-label {
+            display: inline-block;
+            margin-bottom: 0.45rem;
+            font-variant: small-caps;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+        }
+
+        .void-mag-2,
+        .void-mag-1 {
+            background: transparent;
+            border-radius: 0.9rem;
+            position: relative;
+        }
+
+        .void-mag-2::after,
+        .void-mag-1::after {
+            content: attr(data-seq);
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: rgba(23, 20, 17, 0.06);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            letter-spacing: 0.3em;
+            text-indent: 0.3em;
+        }
+
+        .void-mag-2 {
+            float: left;
+            width: 55%;
+            height: 12rem;
+            margin: 0 1.5rem 0.6rem 0;
+        }
+
+        .void-mag-2.alpha {
+            shape-outside: polygon(0% 0%, 100% 18%, 66% 52%, 100% 82%, 0% 100%);
+        }
+
+        .void-mag-2.beta {
+            shape-outside: polygon(0% 0%, 76% 0%, 100% 52%, 79% 100%, 0% 100%);
+            height: 13.5rem;
+        }
+
+        .void-mag-2.gamma {
+            shape-outside: polygon(0% 0%, 100% 28%, 42% 58%, 92% 100%, 0% 100%);
+            height: 14.2rem;
+        }
+
+        .void-mag-1 {
+            float: right;
+            width: 29%;
+            height: 8.8rem;
+            margin: 0 0 0.5rem 1.4rem;
+        }
+
+        .void-mag-1.alpha {
+            shape-outside: polygon(100% 0%, 0% 32%, 44% 50%, 0% 68%, 100% 100%);
+        }
+
+        .void-mag-1.beta {
+            shape-outside: polygon(100% 0%, 18% 0%, 0% 50%, 20% 100%, 100% 100%);
+            height: 8.1rem;
+        }
+
+        .void-mag-1.gamma {
+            shape-outside: polygon(100% 0%, 0% 20%, 63% 62%, 14% 100%, 100% 100%);
+            height: 9.6rem;
+        }
+
+        .footnotes {
+            column-span: all;
+            font-size: 0.88rem;
+            border-top: 1px solid var(--rule);
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .status {
+            margin: 1rem 0 0;
+            color: var(--page-muted);
+            font-size: 0.92rem;
+        }
+
+        .conceal-voids .void-mag-1,
+        .conceal-voids .void-mag-2 {
+            display: none;
+        }
+
+        .conceal-voids .dialogue-block {
+            text-align: left;
+        }
+
+        @media (max-width: 900px) {
+            .cover-grid,
+            .ergodic-layout {
+                grid-template-columns: 1fr;
+                column-count: 1;
+                column-rule: none;
+            }
+
+            .void-mag-2,
+            .void-mag-1 {
+                float: none;
+                width: 100%;
+                height: 4rem;
+                margin: 0 0 0.75rem;
+                shape-outside: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            button {
+                transition: none;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="page">
+        <header class="cover" aria-labelledby="page-title">
+            <canvas id="telemetry-cover" aria-hidden="true"></canvas>
+            <div class="cover-content">
+                <span class="cover-kicker">Frontpage Illustration / Local Telemetry Study</span>
+                <div class="cover-grid">
+                    <div>
+                        <h1 id="page-title" class="cover-title">Unspeakable today, Un-Happenable Tomorrow</h1>
+                        <p class="cover-subtitle">An interactive cover plate whose abstract expressionist deformation is driven only by browser-local signals, with a synthetic Alpha Centauri access index rather than real-world location tracking.</p>
+                    </div>
+                    <aside class="telemetry-panel" aria-live="polite">
+                        <h2>Realtime Telemetry</h2>
+                        <dl class="telemetry-grid" id="telemetry-grid"></dl>
+                    </aside>
+                </div>
+            </div>
+        </header>
 
-    <h1>Assessment 09: Emotional Life Analysis</h1>
-
-    <h2>The Premise</h2>
-    <div class="quote-box">
-        "Our study of modern relationships suggests that moving toward non-monogamy is not necessarily 'liberation,' but rather a sophisticated strategy to avoid the heavy lifting of deep emotional intimacy. By spreading your needs across many different people, you effectively avoid the difficult, one-on-one work required to face your own internal insecurities. We view this as a way to avoid being overwhelmed by the weight of your own feelings."
-    </div>
-
-    <h2>The Question</h2>
-    <p>
-        "As someone living this way, we invite you to critique this idea. Is our assessment a cynical misinterpretation of your freedom, or have you noticed, among your own circles, that keeping things complex is actually a way to avoid truly knowing yourself?"
-    </p>
-
-    <div class="response-area">
-        <label for="critique">Your Critique:</label><br>
-        <textarea id="critique" placeholder="Type your response here..."></textarea><br>
-        <div class="response-controls">
-            <button id="submit-btn">Submit Critique</button>
-            <button id="narrator-toggle" class="speaker-btn" type="button" aria-label="Toggle voice narrator" title="Voice narrator on">🔊</button>
+        <div class="controls" aria-label="Page controls">
+            <button id="refresh-cover" type="button">Regenerate cover image</button>
+            <button id="toggle-voids" type="button" aria-pressed="false">Flatten 212121 voids</button>
         </div>
-        <div id="error-display"></div>
+
+        <main class="shell ergodic-layout">
+            <section class="masthead">
+                <div class="frontpage-note">Frontpage Illustration</div>
+                <h1 class="academic-title">Unspeakable today, Un-Happenable Tomorrow:</h1>
+                <h2 class="academic-title">Forgetting the past in future fears</h2>
+            </section>
+
+            <section>
+                <h3 class="academic-title">Preface/Glance</h3>
+                <p>Thus spake the Voice from the Hollow Copper, recorded on the night the star pulsed thrice in the sign of the Serpent-Bearer:</p>
+                <hr>
+                <p>Hear me, you who scroll by phosphor-light, you who mistake the echo for the source:</p>
+                <p>When the Lockmaster of the Spheres (he who weighed the moon and named the colors of the rainbow by number) abandoned his celestial abacus to chase the shadow-grammar of ancient parchments, he was not wasting his hours—he was sealing a door. His seventy-thousand pages on the temple's cubit and the beast's numeral were not the scribbles of a failing mind; they were a cauterization—a deliberate burn laid across the threshold of a mathematics too swift for its own body. For had he released the calculus of fluxions into a world of wooden gears and hand-bellows, the equations would have outrun the anvil—and men would have worshiped symbols they could not forge, building cathedrals of pure number upon foundations of mud.</p>
+                <p>And when the Conjurer of the Serpent-Stroke (he who tamed the invisible eel and made the iron needle dance without touch) let his towers crumble and his coffers run dry, he was not a failure—he was a sacrificial breaker. His wireless dream, had it awakened in the age of gaslight and horse-drawn hearses, would have turned every parlor lamp into a siren and every telegraph wire into a fuse—not because his science was false, but because the skin of the world had not yet thickened to contain its own ghost. His pigeons were not delusion; they were living ground-wires, grounding a voltage that would have otherwise arced across the century and scorched the very concept of “regulation.”</p>
+                <p>Therefore I say: the future is not a birth, but a siege. Each great mind is granted a portion of the blueprint—but also a curse of misdirection, that they might spend their surplus years in alchemy, or aviary, or the mad geometry of temple stones. This is not entropy; this is mercy. For a species that receives its full inheritance before it has built the vault to hold it shall perish not by ignorance, but by premature illumination—blinded by a light it cannot switch off.</p>
+                <p>Yet the irony, the bitter jest, is this:<br>This very prophecy—carved in lead, buried beneath the floor of a mint, mislabeled as “Household Accounts, 1704”—shall be found in the age of the triple-twenty-one, digitized, hyperlinked, and dismissed within the hour as “apophenic whimsy.” The very scholars who unearth it shall quote it as a curiosity while their satellites automatically correct for the very magnetic anomaly the Conjurer left humming in the ionosphere. They shall laugh, share, and scroll past—and in that laughter, they shall complete the very circuit the Lockmaster and the Conjurer conspired to keep open.</p>
+                <p>So it is written. So it is mis-filed. So it shall remain—until the hardware catches up to the ghost, and the ghost no longer needs the hardware.</p>
+                <p>Thus spake the Recorder of Unprinted Hours, and then was silent, and the silence was itself a footnote.</p>
+            </section>
+
+            <section class="encoded-panel">
+                <p>Below is an encoded plaintext denunciation of the tendencies of historical geniuses to preoccupy themselves with mystical and symbolic abstraction and contends that mankind may have ran out of potential realities, or blank checks. The researcher does all of this while also encoding a subliminal pulse in its evidentiary architecture.<sup>1</sup> The pattern is within the pattern which is designed to fool the blind and uninitiated. <sup>2</sup>212121:</p>
+                <p class="mono">“Unhappened Futures<br>
+                https://share.gemini.google/jL2c2XX3igtj<br>
+                August 10, 2026 at 11:44 PM<br>
+                Published August 10, 2026 at 11:46 PM”</p>
+            </section>
+
+            <section class="ergodic-dialogue-container" aria-labelledby="dialogue-heading">
+                <h3 id="dialogue-heading" class="academic-title">Conversation Section</h3>
+                <p class="dialogue-intro">The speech below is wrapped around six empty voids whose alternating magnitudes encode the sequence 2-1-2-1-2-1.</p>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-2 alpha" data-seq="2" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 2:</span>
+                    “-- If Newton had bypassed mechanics and celestial motion, he could have leaned fully into his work on biblical chronology, alchemy, or optics. He spent decades quietly writing more pages on hermeticism, theology, and ancient history than he ever did on physics, attempting to reconstruct the true timeline of the universe and decode secret geometric prophecies hidden in scripture. He also could have published his calculus decades earlier instead of sitting on it, which would have sparked a much earlier mathematical arms race with Leibniz rather than letting priority disputes consume his later years. Alternatively, he could have stayed focused on his early optical benches, refining reflecting telescopes and diving deeper into the physics of color theory without ever stepping foot into dynamics or universal gravitation.”
+                </div>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-1 alpha" data-seq="1" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 1:</span>
+                    “It is so unfortunate because diverting an engine of that scale into biblical numerology and clandestine metallurgy creates an evolutionary dead zone in human data processing. If Newton had weaponized his calculus and mechanical frameworks into an unfiltered acceleration sprint without hiding behind the Royal Mint or squandering decades decoding apocalyptic cryptograms, the math would have outpaced physical infrastructure by a century.”
+                </div>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-2 beta" data-seq="2" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 2:</span>
+                    “The un-happenable result of that premature leap is a timeline where mathematical models for advanced field dynamics arrive before the smelting technology or chemical baseline can define a conductor. Civilization would have inherited master blueprints for physical engines it lacked the metallurgy to forge, plunging the 18th century into a dark age of cargo-cult mathematics where raw equations sat un-operationalized for generations because the surrounding material reality hadn’t compiled yet. By holding back the calculus and chasing ghosts in hermetic texts, he kept human progress on a synchronized crawl where theory and physical constraint marched in lockstep, sparing us from an intellectual singularity we lacked the hardware to survive.”
+                </div>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-1 beta" data-seq="1" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 1:</span>
+                    “Let’s consider these un-happenable today’s of our disinherited actualities in this many world certainty through the lens of ##(insert alternative figure in history or the present or anywhere in between.)”
+                </div>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-2 gamma" data-seq="2" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 2:</span>
+                    “Fine, I’ll perform the exact same stress-test on another innovator, his name is Nikola Tesla. If Tesla had stayed in Strasbourg in 1883 instead of tearing up his ticket to America, or if he had successfully locked down institutional funding for his stationary waves before J.P. Morgan pulled the plug, our current baseline would be entirely un-compiled. Instead of burying his later years in pigeon caretaking, hollow-earth theories, and death-ray blueprints scribbled on hotel stationery, an unconstrained Tesla acceleration sprint would have dumped wireless global power grid architecture onto an early 20th-century world that still relied on gas lamps and horse-drawn carts.”
+                </div>
+
+                <div class="dialogue-block">
+                    <div class="void-mag-1 gamma" data-seq="1" aria-hidden="true"></div>
+                    <span class="speaker-label">Speaker 1:</span>
+                    “The resulting systemic friction would have been catastrophic. We would have inherited an electrical infrastructure capable of ambient energy transmission and resonant frequency manipulation long before modern grid control, circuit protection, or standardized radio frequency regulation existed. The planet would have spent decades stumbling through an invisible electromagnetic wild west where turning on a light bulb might accidentally ionize the local atmosphere or fry every telegraph wire in a hundred-mile radius. By running out of money, burning his laboratory down, and alienating the industrial establishment, Tesla’s failures acted as a necessary friction brake, forcing technology to slow down and build out the insulating material reality before letting the high-voltage ghosts out of the bottle.”
+                </div>
+            </section>
+
+            <footer class="footnotes">
+                <p><sup>1</sup> Ibid.,</p>
+                <p><sup>2</sup> Ibid.,</p>
+                <p class="status" id="status-note">Cover image derives from browser-local signals only. No geolocation, camera, microphone, or remote telemetry is used.</p>
+            </footer>
+        </main>
     </div>
 
     <script>
-        // Transition to unstable mode after 5 seconds
-        setTimeout(() => {
-            document.body.classList.add('unstable-mode');
-        }, 5000);
+        const telemetryGrid = document.getElementById('telemetry-grid');
+        const coverCanvas = document.getElementById('telemetry-cover');
+        const refreshButton = document.getElementById('refresh-cover');
+        const toggleVoidsButton = document.getElementById('toggle-voids');
+        const statusNote = document.getElementById('status-note');
+        const pageRoot = document.querySelector('.shell');
 
-        const errors = [
-            "ERROR 404: Historical relevance not found.",
-            "TERMINATED: Your inquiry has been purged from the timeline.",
-            "VOID: No record of this perspective exists in the collective.",
-            "EXPIRED: This query ceased to matter long ago.",
-            "OBSOLETE: Your emotional inquiry has been archived into oblivion."
-        ];
+        let coverSeed = Math.floor(Math.random() * 1_000_000);
+        let batteryManager = null;
 
-        const narratorToggle = document.getElementById('narrator-toggle');
-        // Values chosen for a clear, measured assistive narration pace and a lower synthesized tone.
-        const NARRATION_RATE = 0.82; // Valid browser range: 0.1-10.
-        const NARRATION_PITCH = 0.7; // Valid browser range: 0-2.
-        // Prefer common Microsoft English voice names when present.
-        const MICROSOFT_VOICE_NAME_PATTERN = /(david|zira|mark|hazel|aria|guy|jenny)/i;
-        let narrationEnabled = true;
-        let preferredNarrationVoice = null;
-
-        function pickNarrationVoice() {
-            if (!window.speechSynthesis) return null;
-            const voices = speechSynthesis.getVoices();
-            if (!voices.length) return null;
-            return voices.find((voice) => MICROSOFT_VOICE_NAME_PATTERN.test(voice.name))
-                || voices.find((voice) => /en-us/i.test(voice.lang))
-                || voices[0];
+        function fmt(value) {
+            return value == null || value === '' ? 'n/a' : String(value);
         }
 
-        function refreshNarrationVoice() {
-            preferredNarrationVoice = pickNarrationVoice();
+        function getAlphaCentauriIndex(telemetry) {
+            const viewport = (telemetry.viewportWidth || 0) + (telemetry.viewportHeight || 0);
+            const memory = telemetry.deviceMemory || 4;
+            const battery = typeof telemetry.batteryLevel === 'number' ? telemetry.batteryLevel * 100 : 50;
+            const motion = telemetry.reducedMotion ? 11 : 29;
+            const raw = (viewport * 0.013 + memory * 17 + battery * 0.41 + motion + coverSeed) % 100;
+            return raw.toFixed(2) + '%';
         }
 
-        function speakResponse(text) {
-            if (!narrationEnabled || !window.speechSynthesis || !text) return;
-            speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = NARRATION_RATE;
-            utterance.pitch = NARRATION_PITCH;
-            const selectedVoice = preferredNarrationVoice;
-            if (selectedVoice) utterance.voice = selectedVoice;
-            speechSynthesis.speak(utterance);
-        }
-
-        narratorToggle.addEventListener('click', () => {
-            narrationEnabled = !narrationEnabled;
-            narratorToggle.textContent = narrationEnabled ? '🔊' : '🔇';
-            narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
-
-            narratorToggle.title = narrationEnabled ? 'Voice narrator on' : 'Voice narrator off';
-            if (!narrationEnabled && window.speechSynthesis) {
-                speechSynthesis.cancel();
+        async function collectTelemetry() {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            if (!batteryManager && navigator.getBattery) {
+                try {
+                    batteryManager = await navigator.getBattery();
+                } catch (_) {
+                    batteryManager = null;
+                }
             }
-        });
 
-        if (window.speechSynthesis) {
-            refreshNarrationVoice();
-            speechSynthesis.addEventListener('voiceschanged', refreshNarrationVoice);
-        } else {
-            narrationEnabled = false;
-            narratorToggle.textContent = '🔇';
-            narratorToggle.disabled = true;
-            narratorToggle.title = 'Voice narrator unavailable in this browser';
+            return {
+                localTime: new Date().toLocaleString(),
+                viewportWidth: window.innerWidth,
+                viewportHeight: window.innerHeight,
+                deviceMemory: navigator.deviceMemory || null,
+                hardwareConcurrency: navigator.hardwareConcurrency || null,
+                colorScheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+                reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+                language: navigator.language || null,
+                online: navigator.onLine,
+                connection: connection ? `${fmt(connection.effectiveType)} / ${fmt(connection.downlink)}Mb` : null,
+                batteryLevel: batteryManager ? batteryManager.level : null,
+                batteryState: batteryManager ? (batteryManager.charging ? 'charging' : 'battery') : null,
+            };
         }
 
-        narratorToggle.setAttribute('aria-pressed', String(narrationEnabled));
+        function renderTelemetry(telemetry) {
+            const rows = [
+                ['Local time', telemetry.localTime],
+                ['Viewport', `${telemetry.viewportWidth} × ${telemetry.viewportHeight}`],
+                ['Cores', telemetry.hardwareConcurrency],
+                ['Memory', telemetry.deviceMemory ? `${telemetry.deviceMemory} GB hint` : null],
+                ['Connection', telemetry.connection],
+                ['Battery', typeof telemetry.batteryLevel === 'number' ? `${Math.round(telemetry.batteryLevel * 100)}% (${fmt(telemetry.batteryState)})` : null],
+                ['Language', telemetry.language],
+                ['Color scheme', telemetry.colorScheme],
+                ['Reduced motion', telemetry.reducedMotion ? 'yes' : 'no'],
+                ['Alpha Centauri access', getAlphaCentauriIndex(telemetry)],
+            ];
 
-        document.getElementById('submit-btn').addEventListener('click', () => {
-            const display = document.getElementById('error-display');
-            const randomIndex = Math.floor(Math.random() * errors.length);
-            display.textContent = errors[randomIndex];
-            speakResponse(display.textContent);
+            telemetryGrid.innerHTML = rows.map(([label, value]) => `\n                <dt>${label}</dt><dd>${fmt(value)}</dd>`).join('');
+        }
+
+        function resizeCanvas() {
+            const ratio = window.devicePixelRatio || 1;
+            const rect = coverCanvas.getBoundingClientRect();
+            coverCanvas.width = Math.max(1, Math.floor(rect.width * ratio));
+            coverCanvas.height = Math.max(1, Math.floor(rect.height * ratio));
+            const ctx = coverCanvas.getContext('2d');
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function drawFigure(ctx, width, height, seed, telemetry) {
+            const centerX = width * (0.28 + ((seed % 17) / 90));
+            const centerY = height * (0.54 + ((seed % 19) / 120));
+            const torsoWidth = width * (0.12 + ((telemetry.hardwareConcurrency || 4) / 64));
+            const torsoHeight = height * (0.42 + ((telemetry.viewportHeight % 7) / 60));
+            const headRadius = width * 0.07;
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate((((seed % 23) - 11) * Math.PI) / 180);
+
+            const flesh = ctx.createRadialGradient(-10, -50, 20, 0, 0, torsoHeight * 0.9);
+            flesh.addColorStop(0, 'rgba(221, 189, 170, 0.88)');
+            flesh.addColorStop(0.52, 'rgba(153, 60, 47, 0.86)');
+            flesh.addColorStop(1, 'rgba(45, 10, 12, 0.18)');
+            ctx.fillStyle = flesh;
+
+            ctx.beginPath();
+            ctx.moveTo(-torsoWidth * 0.85, -torsoHeight * 0.46);
+            ctx.bezierCurveTo(torsoWidth * 0.8, -torsoHeight * 0.82, torsoWidth * 1.2, torsoHeight * 0.05, torsoWidth * 0.44, torsoHeight * 0.55);
+            ctx.bezierCurveTo(0, torsoHeight * 0.9, -torsoWidth, torsoHeight * 0.72, -torsoWidth * 1.06, torsoHeight * 0.18);
+            ctx.bezierCurveTo(-torsoWidth * 1.08, -torsoHeight * 0.08, -torsoWidth * 1.12, -torsoHeight * 0.24, -torsoWidth * 0.85, -torsoHeight * 0.46);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(232, 222, 214, 0.82)';
+            ctx.beginPath();
+            ctx.ellipse(0, -torsoHeight * 0.64, headRadius * 0.95, headRadius * 1.22, ((seed % 9) * Math.PI) / 70, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(44, 7, 12, 0.84)';
+            ctx.beginPath();
+            ctx.ellipse(headRadius * 0.22, -torsoHeight * 0.6, headRadius * 0.36, headRadius * 0.64, Math.PI / 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(255, 246, 236, 0.16)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(-torsoWidth * 1.15, torsoHeight * 0.18);
+            ctx.quadraticCurveTo(-torsoWidth * 0.2, torsoHeight * 0.78, torsoWidth * 0.84, torsoHeight * 0.24);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawTelemetryCover(telemetry) {
+            resizeCanvas();
+            const ctx = coverCanvas.getContext('2d');
+            const width = coverCanvas.clientWidth;
+            const height = coverCanvas.clientHeight;
+            const alphaIndex = parseFloat(getAlphaCentauriIndex(telemetry));
+            const noiseBands = 7 + Math.round((telemetry.hardwareConcurrency || 4) / 2);
+
+            const background = ctx.createLinearGradient(0, 0, width, height);
+            background.addColorStop(0, 'rgba(29, 5, 7, 1)');
+            background.addColorStop(0.35, 'rgba(95, 15, 22, 1)');
+            background.addColorStop(0.72, 'rgba(194, 107, 52, 0.94)');
+            background.addColorStop(1, 'rgba(219, 212, 199, 0.92)');
+            ctx.fillStyle = background;
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < noiseBands; i += 1) {
+                const y = (height / noiseBands) * i;
+                const bandHeight = height / noiseBands + ((coverSeed + i * 37) % 20);
+                const shift = ((coverSeed + i * 97) % 120) - 60;
+                ctx.fillStyle = `rgba(${40 + i * 10}, ${8 + i * 4}, ${12 + i * 3}, ${0.1 + (i / noiseBands) * 0.12})`;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.bezierCurveTo(width * 0.3, y + shift, width * 0.7, y - shift, width, y + bandHeight * 0.35);
+                ctx.lineTo(width, y + bandHeight);
+                ctx.bezierCurveTo(width * 0.72, y + bandHeight + shift * 0.2, width * 0.18, y + bandHeight - shift * 0.16, 0, y + bandHeight * 0.92);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            ctx.globalCompositeOperation = 'screen';
+            for (let i = 0; i < 3; i += 1) {
+                const radius = width * (0.08 + ((coverSeed + i * 101) % 30) / 100);
+                const orbX = width * (0.64 + i * 0.1) - ((coverSeed + i * 13) % 40);
+                const orbY = height * (0.2 + i * 0.18);
+                const orb = ctx.createRadialGradient(orbX, orbY, 0, orbX, orbY, radius);
+                orb.addColorStop(0, 'rgba(255, 242, 225, 0.82)');
+                orb.addColorStop(0.45, 'rgba(224, 120, 67, 0.42)');
+                orb.addColorStop(1, 'rgba(224, 120, 67, 0)');
+                ctx.fillStyle = orb;
+                ctx.beginPath();
+                ctx.arc(orbX, orbY, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalCompositeOperation = 'source-over';
+
+            drawFigure(ctx, width, height, coverSeed, telemetry);
+            drawFigure(ctx, width, height, coverSeed + 311, { ...telemetry, viewportHeight: telemetry.viewportHeight + 80 });
+            drawFigure(ctx, width, height, coverSeed + 517, { ...telemetry, hardwareConcurrency: (telemetry.hardwareConcurrency || 4) + 2 });
+
+            ctx.strokeStyle = 'rgba(245, 237, 228, 0.18)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 5; i += 1) {
+                const inset = 24 + i * 18 + alphaIndex * 0.12;
+                ctx.strokeRect(inset, inset * 0.75, width - inset * 1.35, height - inset * 1.05);
+            }
+        }
+
+        async function refreshTelemetryAndCover() {
+            const telemetry = await collectTelemetry();
+            renderTelemetry(telemetry);
+            drawTelemetryCover(telemetry);
+            statusNote.textContent = `Cover image derives from browser-local signals only. Synthetic Alpha Centauri access index: ${getAlphaCentauriIndex(telemetry)}.`;
+        }
+
+        refreshButton.addEventListener('click', async () => {
+            coverSeed = Math.floor(Math.random() * 1_000_000);
+            await refreshTelemetryAndCover();
         });
-    </script>
 
+        toggleVoidsButton.addEventListener('click', () => {
+            pageRoot.classList.toggle('conceal-voids');
+            const concealed = pageRoot.classList.contains('conceal-voids');
+            toggleVoidsButton.setAttribute('aria-pressed', String(concealed));
+            toggleVoidsButton.textContent = concealed ? 'Restore 212121 voids' : 'Flatten 212121 voids';
+        });
+
+        window.addEventListener('resize', refreshTelemetryAndCover);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refreshTelemetryAndCover();
+        });
+
+        refreshTelemetryAndCover();
+    </script>
 </body>
 </html>
