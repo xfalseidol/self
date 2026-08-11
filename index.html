@@ -422,7 +422,7 @@
                 <div class="frontpage-note">Frontpage Illustration</div>
                 <hgroup>
                     <h2 class="academic-title">Unspeakable today, Un-Happenable Tomorrow:</h2>
-                    <p class="academic-title">Forgetting the past in future fears</p>
+                    <h3 class="academic-title">Forgetting the past in future fears</h3>
                 </hgroup>
             </section>
 
@@ -572,11 +572,12 @@
 
         function resizeCanvas() {
             const ratio = window.devicePixelRatio || 1;
-            const rect = coverCanvas.getBoundingClientRect();
-            coverCanvas.width = Math.max(1, Math.floor(rect.width * ratio));
-            coverCanvas.height = Math.max(1, Math.floor(rect.height * ratio));
-            const ctx = coverCanvas.getContext('2d');
-            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            const host = coverCanvas.parentElement;
+            const width = host ? host.clientWidth : coverCanvas.clientWidth;
+            const height = host ? host.clientHeight : coverCanvas.clientHeight;
+            coverCanvas.width = Math.max(1, Math.floor(width * ratio));
+            coverCanvas.height = Math.max(1, Math.floor(height * ratio));
+            return { width, height, ratio };
         }
 
         function drawFigure(ctx, width, height, seed, telemetry) {
@@ -623,11 +624,9 @@
         }
 
         function drawTelemetryCover(telemetry) {
-            resizeCanvas();
+            const { width, height, ratio } = resizeCanvas();
             const ctx = coverCanvas.getContext('2d');
-            const width = coverCanvas.clientWidth;
-            const height = coverCanvas.clientHeight;
-            const ratio = window.devicePixelRatio || 1;
+            if (!width || !height) return;
             const alphaIndex = parseFloat(getAlphaCentauriIndex(telemetry));
             const noiseBands = 7 + Math.round((telemetry.hardwareConcurrency || 4) / 2);
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
