@@ -488,7 +488,7 @@
 
             <footer class="footnotes">
                 <p><sup>1</sup> “Unhappened Futures,” published August 10, 2026 at 11:46 PM, https://share.gemini.google/jL2c2XX3igtj.</p>
-                <p><sup>2</sup> “Unhappened Futures,” August 10, 2026 at 11:44 PM draft timestamp, https://share.gemini.google/jL2c2XX3igtj.</p>
+                <p><sup>2</sup> Sequence marker and pre-publication timestamp reproduced from the source cited in note 1.</p>
                 <p class="status" id="status-note">Cover image derives from browser-local signals only. No geolocation, camera, microphone, or remote telemetry is used.</p>
             </footer>
         </main>
@@ -559,7 +559,13 @@
                 ['Alpha Centauri access', getAlphaCentauriIndex(telemetry)],
             ];
 
-            telemetryGrid.innerHTML = rows.map(([label, value]) => `\n                <dt>${label}</dt><dd>${fmt(value)}</dd>`).join('');
+            telemetryGrid.replaceChildren(...rows.flatMap(([label, value]) => {
+                const term = document.createElement('dt');
+                term.textContent = label;
+                const detail = document.createElement('dd');
+                detail.textContent = fmt(value);
+                return [term, detail];
+            }));
         }
 
         function resizeCanvas() {
@@ -619,8 +625,10 @@
             const ctx = coverCanvas.getContext('2d');
             const width = coverCanvas.clientWidth;
             const height = coverCanvas.clientHeight;
+            const ratio = window.devicePixelRatio || 1;
             const alphaIndex = parseFloat(getAlphaCentauriIndex(telemetry));
             const noiseBands = 7 + Math.round((telemetry.hardwareConcurrency || 4) / 2);
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
             const background = ctx.createLinearGradient(0, 0, width, height);
             background.addColorStop(0, 'rgba(29, 5, 7, 1)');
