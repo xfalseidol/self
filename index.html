@@ -420,8 +420,10 @@
         <main class="shell ergodic-layout">
             <section class="masthead">
                 <div class="frontpage-note">Frontpage Illustration</div>
-                <h2 class="academic-title">Unspeakable today, Un-Happenable Tomorrow:</h2>
-                <p class="academic-title">Forgetting the past in future fears</p>
+                <hgroup>
+                    <h2 class="academic-title">Unspeakable today, Un-Happenable Tomorrow:</h2>
+                    <p class="academic-title">Forgetting the past in future fears</p>
+                </hgroup>
             </section>
 
             <section>
@@ -693,6 +695,7 @@
         });
 
         toggleVoidsButton.addEventListener('click', () => {
+            if (!pageRoot) return;
             pageRoot.classList.toggle('conceal-voids');
             const concealed = pageRoot.classList.contains('conceal-voids');
             toggleVoidsButton.setAttribute('aria-pressed', String(concealed));
