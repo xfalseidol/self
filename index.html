@@ -180,7 +180,8 @@
             transform: translateY(-1px);
             border-color: rgba(95, 15, 22, 0.32);
             background: rgba(255, 252, 247, 0.95);
-            outline: none;
+            outline: 2px solid rgba(95, 15, 22, 0.55);
+            outline-offset: 2px;
         }
 
         .shell {
@@ -472,7 +473,7 @@
                 <div class="dialogue-block">
                     <div class="void-mag-1 beta" data-seq="1" aria-hidden="true"></div>
                     <span class="speaker-label">Speaker 1:</span>
-                    “Let’s consider these un-happenable today’s of our disinherited actualities in this many world certainty through the lens of Nikola Tesla.”
+                    “Let’s consider these un-happenable todays of our disinherited actualities in this many world certainty through the lens of Nikola Tesla.”
                 </div>
 
                 <div class="dialogue-block">
@@ -626,7 +627,10 @@
         function drawTelemetryCover(telemetry) {
             const { width, height, ratio } = resizeCanvas();
             const ctx = coverCanvas.getContext('2d');
-            if (!width || !height) return;
+            if (!width || !height) {
+                window.requestAnimationFrame(() => drawTelemetryCover(telemetry));
+                return;
+            }
             const alphaIndex = parseFloat(getAlphaCentauriIndex(telemetry));
             const noiseBands = 7 + Math.round((telemetry.hardwareConcurrency || 4) / 2);
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
